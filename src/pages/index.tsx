@@ -1,11 +1,35 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import { type ChangeEvent, useState } from "react";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const TEXTAREA_COLS = 50;
+  const TEXTAREA_ROWS = 6;
+
+  const [sendAllowed, setSendAllowed] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+
+  const aiResponse = api.response.respond.useQuery(
+    { text: message },
+    { enabled: false, retry: false }
+  );
+
+  const sendData = () => {
+    console.log(message);
+    void aiResponse.refetch();
+  };
+
+  const validateTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    setSendAllowed(e.target.value ? true : false);
+  };
+
+  const clearTextArea = () => {
+    setMessage("");
+    setSendAllowed(false);
+  };
 
   return (
     <>
@@ -17,34 +41,38 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+            Enter Dialogue Below
           </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
+
+          <textarea
+            className="resize-none overflow-hidden rounded-lg p-2"
+            value={message}
+            rows={TEXTAREA_ROWS}
+            cols={TEXTAREA_COLS}
+            maxLength={TEXTAREA_COLS * TEXTAREA_ROWS}
+            onChange={validateTextArea}
+          />
+          <div className="flex gap-12">
+            <button
+              className="rounded-lg border px-6 py-2 text-xl text-white hover:bg-violet-900 disabled:opacity-25 disabled:hover:bg-transparent"
+              onClick={sendData}
+              disabled={!sendAllowed}
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
+              Send
+            </button>
+            <button
+              className="rounded-lg border px-6 py-2 text-xl text-white hover:bg-violet-900 disabled:opacity-25 disabled:hover:bg-transparent"
+              onClick={clearTextArea}
+              disabled={!sendAllowed}
             >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
+              Clear
+            </button>
           </div>
+
           <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+            {aiResponse.data
+              ? aiResponse.data.response
+              : "AI is awaiting text..."}
           </p>
         </div>
       </main>
