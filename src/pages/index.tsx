@@ -125,7 +125,13 @@ const Home: NextPage = () => {
               id="region"
             >
               {Object.keys(AIRegion).map((k, i) => (
-                <option className="bg-zinc-900" key={i} value={AIRegion[k]}>
+                <option
+                  className="bg-zinc-900"
+                  key={i}
+                  value={
+                    Object.values(AIRegion)[Object.keys(AIRegion).indexOf(k)]
+                  }
+                >
                   {k}
                 </option>
               ))}
@@ -143,7 +149,8 @@ const Home: NextPage = () => {
                 <option
                   className="bg-zinc-900"
                   key={i}
-                  value={determineVoiceDropdown()[k]}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  value={Object.values(determineVoiceDropdown())[Object.keys(determineVoiceDropdown()).indexOf(k)]}
                 >
                   {k}
                 </option>
