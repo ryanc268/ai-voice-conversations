@@ -7,6 +7,8 @@ import { z } from "zod";
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   OPENAI_API_KEY: z.string(),
+  SPEECH_KEY: z.string(),
+  SPEECH_REGION: z.string(),
 });
 
 /**
@@ -25,7 +27,9 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
-  OPENAI_API_KEY: process.env.OPENAI_API_KEY
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  SPEECH_KEY: process.env.SPEECH_KEY,
+  SPEECH_REGION: process.env.SPEECH_REGION,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
