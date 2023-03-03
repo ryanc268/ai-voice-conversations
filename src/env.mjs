@@ -17,6 +17,8 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_SPEECH_KEY: z.string(),
+  NEXT_PUBLIC_SPEECH_REGION: z.string()
 });
 
 /**
@@ -30,6 +32,8 @@ const processEnv = {
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   SPEECH_KEY: process.env.SPEECH_KEY,
   SPEECH_REGION: process.env.SPEECH_REGION,
+  NEXT_PUBLIC_SPEECH_KEY: process.env.NEXT_PUBLIC_SPEECH_KEY,
+  NEXT_PUBLIC_SPEECH_REGION: process.env.NEXT_PUBLIC_SPEECH_REGION,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

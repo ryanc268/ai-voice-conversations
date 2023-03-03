@@ -16,7 +16,7 @@ export const aiResponseRouter = createTRPCRouter({
         text: z.string().min(1),
         parentId: z.string(),
         convoId: z.string().optional(),
-        voiceType: z.string()
+        voiceType: z.string(),
       })
     )
     .mutation(({ input }) => {
